@@ -1,0 +1,9 @@
+name: unsloth-studio
+
+services:
+  run:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      image: unsolth-dgx-spark:latest
+      container_name: unsloth
