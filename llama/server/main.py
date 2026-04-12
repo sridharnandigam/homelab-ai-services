@@ -13,13 +13,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "model_name",
-        help="Model filename in ./models, for example qwen2.5-7b-instruct.gguf.",
+        help="Model filename in models directory, for example qwen2.5-7b-instruct.gguf.",
     )
     parser.add_argument(
         "--llama-port",
         type=int,
         default=DEFAULT_LLAMA_PORT,
         help=f"Host port for llama-server. Defaults to {DEFAULT_LLAMA_PORT}.",
+    )
+    parser.add_argument(
+        "--model-dir",
+        type=str,
+        default="~/models/",
+        help=f"Location of model ggufs"
     )
     return parser.parse_args()
 
@@ -28,6 +34,8 @@ def main() -> None:
     args = parse_args()
     compose_dir = Path(__file__).resolve().parent
     env = os.environ.copy()
+
+    env["MODEL_DIR"] = os.path.expanduser(args.model_dir)
     env["LLAMA_MODEL"] = f"/models/{args.model_name}"
     env["LLAMA_PORT"] = str(args.llama_port)
 

@@ -40,3 +40,6 @@ Run a stack from the repo root with an explicit compose file:
 docker compose -f llama/gemma/compose.yaml up -d
 docker compose -f llama/server/compose.yaml up -d
 ```
+
+## Why so many inference servers?
+This is a dev setup and meant for experimentation with local AI. As such, it contains all the files for that. Not all of them need to be run for an end-to-end inference stack.
