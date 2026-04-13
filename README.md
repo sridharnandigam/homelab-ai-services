@@ -41,5 +41,5 @@ docker compose -f llama/gemma/compose.yaml up -d
 docker compose -f llama/server/compose.yaml up -d
 ```
 
-## Why so many inference servers?
-This is a dev setup and meant for experimentation with local AI. As such, it contains all the files for that. Not all of them need to be run for an end-to-end inference stack.
+## Why so many services?
+This is a dev setup and meant for experimentation with local AI. Not all of them are necessary for an end-to-end "productionized" inference stack.
