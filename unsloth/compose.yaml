@@ -1,9 +1,35 @@
 name: unsloth-studio
 
 services:
-  run:
+  unsloth:
     build:
       context: .
       dockerfile: Dockerfile
-      image: unsolth-dgx-spark:latest
-      container_name: unsloth
+    image: unsloth-core
+    container_name: unsloth
+    environment:
+      JUPYTER_PORT: ${JUPYTER_PORT:-8888}
+      JUPYTER_TOKEN: ${JUPYTER_TOKEN:-unsloth}
+      NOTEBOOK_DIR: ${PWD}
+    network_mode: host
+    ipc: host
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    volumes:
+      - ${PWD}:${PWD}
+      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+    working_dir: ${PWD}
+    gpus: all
+    restart: unless-stopped
+
+  studio:
+    build:
+      context: .
+      dockerfile: Dockerfile.unsloth_studio
+      image: unsloth-studio
+      container_name: unsloth_studio
+      environment:
+        SERVER_PORT: ${SERVER_PORT:-8889}
+      gpus: all
+      restart: unless-stopped

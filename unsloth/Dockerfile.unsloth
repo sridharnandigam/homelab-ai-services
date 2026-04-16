@@ -25,7 +25,7 @@ RUN git clone -b v0.0.33 --depth=1 https://github.com/facebookresearch/xformers 
 
 # Install unsloth and other dependencies
 RUN pip install --no-deps bitsandbytes==0.48.0 transformers==4.56.2 trl==0.22.2
-RUN pip install unsloth unsloth_zoo
+RUN pip install unsloth unsloth_zoo jupyterlab
 
-# Launch the shell
-CMD ["/bin/bash"]
+# Launch a notebook server by default.
+CMD ["sh", "-lc", "jupyter lab --ip=0.0.0.0 --port=${JUPYTER_PORT:-8888} --no-browser --allow-root --ServerApp.root_dir=${NOTEBOOK_DIR:-$PWD} --ServerApp.token=${JUPYTER_TOKEN:-unsloth}"]

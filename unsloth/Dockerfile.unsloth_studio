@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/pytorch:25.11-py3
+
+# Set CUDA environment variables
+ENV CUDA_HOME=/usr/local/cuda-13.0
+ENV CUDA_PATH=$CUDA_HOME
+ENV PATH=$CUDA_HOME/bin:$PATH
+ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+ENV C_INCLUDE_PATH=$CUDA_HOME/include:$C_INCLUDE_PATH
+ENV CPLUS_INCLUDE_PATH=$CUDA_HOME/include:$CPLUS_INCLUDE_PATH
+
+# Install unsloth studio. This comes with core unsloth unctionality 
+RUN "curl -fsSL https://unsloth.ai/install.sh | sh"
+
+CMD ["unsloth",  "studio", "-H", "0.0.0.0",  "-p",  "8889"]
+
