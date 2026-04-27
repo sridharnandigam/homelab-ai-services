@@ -4,7 +4,7 @@ services:
   unsloth:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.unsloth
     image: unsloth-core
     container_name: unsloth
     environment:
@@ -23,13 +23,13 @@ services:
     gpus: all
     restart: unless-stopped
 
-  studio:
+  unsloth-studio:
     build:
       context: .
-      dockerfile: Dockerfile.unsloth_studio
-      image: unsloth-studio
-      container_name: unsloth_studio
-      environment:
-        SERVER_PORT: ${SERVER_PORT:-8889}
-      gpus: all
-      restart: unless-stopped
+      dockerfile: Dockerfile.unsloth-studio
+    image: unsloth-studio
+    container_name: unsloth-studio
+    environment:
+      SERVER_PORT: ${SERVER_PORT:-8889}
+    gpus: all
+    restart: unless-stopped

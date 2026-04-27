@@ -8,8 +8,7 @@ ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 ENV C_INCLUDE_PATH=$CUDA_HOME/include:$C_INCLUDE_PATH
 ENV CPLUS_INCLUDE_PATH=$CUDA_HOME/include:$CPLUS_INCLUDE_PATH
 
-# Install unsloth studio. This comes with core unsloth unctionality 
-RUN "curl -fsSL https://unsloth.ai/install.sh | sh"
+# Install Unsloth Studio. This includes the core Unsloth functionality. Adding a flag to use cu130 since nvidia-smi doesn't work in compose
+RUN sh -c 'curl -fsSL https://unsloth.ai/install.sh | sh -s -- --cuda cu130'
 
-CMD ["unsloth",  "studio", "-H", "0.0.0.0",  "-p",  "8889"]
-
+CMD ["sh", "-lc", "unsloth studio -H 0.0.0.0 -p ${SERVER_PORT:-8889}"]
