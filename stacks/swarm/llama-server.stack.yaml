@@ -1,0 +1,39 @@
+services:
+  server:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda13
+    command:
+      - -m
+      - /models/model.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: ingress
+    volumes:
+      - type: bind
+        source: /mnt/models
+        target: /models
+        read_only: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.gpu == true
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+      restart_policy:
+        condition: on-failure

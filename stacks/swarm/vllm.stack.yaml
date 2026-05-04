@@ -1,0 +1,33 @@
+services:
+  vllm:
+    image: registry.local:5000/vllm-openai:latest
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: ingress
+    ipc: host
+    environment:
+      # For gated models, provide HF_TOKEN from your shell when deploying or
+      # pre-populate /mnt/hf-cache with a Hugging Face login token on each node.
+      HF_TOKEN: ${HF_TOKEN}
+    volumes:
+      - type: bind
+        source: /mnt/hf-cache
+        target: /root/.cache/huggingface
+    command:
+      - --model
+      - Qwen/Qwen3-0.6B
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.gpu == true
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+      restart_policy:
+        condition: on-failure

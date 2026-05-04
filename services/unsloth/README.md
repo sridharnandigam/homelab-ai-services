@@ -6,7 +6,7 @@ Unsloth server for finetuning. This is mainly for the DGX Spark and therefore as
 Run these commands from this directory:
 
 ```bash
-cd /home/sridharn/docker-services/unsloth
+cd /home/sridharn/docker-services/services/unsloth
 ```
 
 ### Unsloth Core

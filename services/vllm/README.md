@@ -14,7 +14,7 @@ This folder runs the OpenAI-compatible vLLM server with Docker Compose.
 Create a local `.env` file in this directory:
 
 ```bash
-cd /home/sridharn/docker-services/vllm
+cd /home/sridharn/docker-services/services/vllm
 printf 'HF_TOKEN=hf_your_token_here\nMODEL=Qwen/Qwen3-0.6B\n' > .env
 ```
 
@@ -61,7 +61,7 @@ docker compose down
 If you run Compose from the repo root instead, pass the compose file and env file explicitly:
 
 ```bash
-docker compose --env-file vllm/.env -f vllm/compose.yaml up --build
+docker compose --env-file services/vllm/.env -f services/vllm/compose.yaml up --build
 ```
 
 ## Test
