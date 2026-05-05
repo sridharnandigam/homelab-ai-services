@@ -1,8 +1,6 @@
 services:
   vllm:
-    build:
-      context: .
-    image: vllm-openai:latest
+    image: vllm/vllm-openai:latest
     ports:
       - "8000:8000"
     ipc: host

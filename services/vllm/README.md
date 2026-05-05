@@ -43,13 +43,13 @@ MODEL=Qwen/Qwen3-4B docker compose up
 From this directory:
 
 ```bash
-docker compose up --build
+docker compose up
 ```
 
 To run in the background:
 
 ```bash
-docker compose up --build -d
+docker compose up -d
 ```
 
 To stop the server:
@@ -61,7 +61,7 @@ docker compose down
 If you run Compose from the repo root instead, pass the compose file and env file explicitly:
 
 ```bash
-docker compose --env-file services/vllm/.env -f services/vllm/compose.yaml up --build
+docker compose --env-file services/vllm/.env -f services/vllm/compose.yaml up
 ```
 
 ## Test
@@ -100,10 +100,8 @@ This keeps downloaded model files across container rebuilds and restarts.
 
 ## Image
 
-The compose file builds this local image:
+The compose file uses the upstream vLLM OpenAI-compatible image directly:
 
 ```yaml
-image: vllm-openai:latest
+image: vllm/vllm-openai:latest
 ```
-
-The image name is just a Docker tag. Docker stores it in its internal image store, not in this folder.
