@@ -1,0 +1,24 @@
+services:
+  comfyui:
+    build:
+      context: .
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    image: comfyui:latest
+    container_name: comfyui
+    restart: unless-stopped
+    ports:
+      - "8188:8188"
+    volumes:
+      - ${HOME}/.comfyui/models:/opt/comfyui/models
+      - ${HOME}/.comfyui/custom-nodes:/opt/comfyui/custom_nodes
+      - ${HOME}/.comfyui/output:/opt/comfyui/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
