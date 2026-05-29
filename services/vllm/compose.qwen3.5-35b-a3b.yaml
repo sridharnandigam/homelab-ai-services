@@ -10,7 +10,7 @@ services:
       - ${HOME}/.cache/huggingface:/root/.cache/huggingface
     command:
       - --model
-      - ${MODEL:-Qwen/Qwen3-0.6B}
+      - Qwen/Qwen3.5-35B-A3B
     deploy:
       resources:
         reservations:

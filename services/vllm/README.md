@@ -9,59 +9,59 @@ This folder runs the OpenAI-compatible vLLM server with Docker Compose.
 - A GPU visible to Docker
 - A Hugging Face token if the model requires authentication
 
+## Compose Files
+
+Each supported model has its own compose file:
+
+- `compose.qwen3-0.6b.yaml`: serves `Qwen/Qwen3-0.6B`
+- `compose.qwen3.5-35b-a3b.yaml`: serves `Qwen/Qwen3.5-35B-A3B`
+
 ## Environment
 
 Create a local `.env` file in this directory:
 
 ```bash
 cd /home/sridharn/docker-services/services/vllm
-printf 'HF_TOKEN=hf_your_token_here\nMODEL=Qwen/Qwen3-0.6B\n' > .env
+printf 'HF_TOKEN=hf_your_token_here\n' > .env
 ```
 
 The compose file reads these variables:
 
 - `HF_TOKEN`: passed into the container for Hugging Face downloads.
-- `MODEL`: optional model name. Defaults to `Qwen/Qwen3-0.6B` if unset.
 - `HOME`: used by Compose to mount your host Hugging Face cache.
 
 Do not commit `.env`. The repo root `.gitignore` already ignores `.env` files.
-
-To use a different model, edit `MODEL` in `.env`:
-
-```bash
-MODEL=mistralai/Mistral-7B-Instruct-v0.3
-```
-
-You can also override it for a single run:
-
-```bash
-MODEL=Qwen/Qwen3-4B docker compose up
-```
 
 ## Run
 
 From this directory:
 
 ```bash
-docker compose up
+docker compose -f compose.qwen3-0.6b.yaml up
 ```
 
 To run in the background:
 
 ```bash
-docker compose up -d
+docker compose -f compose.qwen3-0.6b.yaml up -d
 ```
 
 To stop the server:
 
 ```bash
-docker compose down
+docker compose -f compose.qwen3-0.6b.yaml down
+```
+
+To run the larger model, use its compose file:
+
+```bash
+docker compose -f compose.qwen3.5-35b-a3b.yaml up
 ```
 
 If you run Compose from the repo root instead, pass the compose file and env file explicitly:
 
 ```bash
-docker compose --env-file services/vllm/.env -f services/vllm/compose.yaml up
+docker compose --env-file services/vllm/.env -f services/vllm/compose.qwen3-0.6b.yaml up
 ```
 
 ## Test
@@ -80,7 +80,7 @@ curl http://localhost:8000/v1/chat/completions \
   -d '{"model":"Qwen/Qwen3-0.6B","messages":[{"role":"user","content":"Say hello in one sentence."}],"max_tokens":32}'
 ```
 
-If you changed `MODEL`, use that model name in the request body.
+Use `Qwen/Qwen3.5-35B-A3B` in the request body when running `compose.qwen3.5-35b-a3b.yaml`.
 
 ## Model Cache
 
