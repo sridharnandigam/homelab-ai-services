@@ -1,16 +1,19 @@
 services:
   vllm:
     image: vllm/vllm-openai:latest
+    entrypoint: ["/bin/bash", "/vllm-entrypoint.sh"]
     ports:
       - "8000:8000"
     ipc: host
+    env_file:
+      - .env
     environment:
-      HF_TOKEN: ${HF_TOKEN}
+      HF_MODEL_ID: Qwen/Qwen3-0.6B
     volumes:
       - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+      - ${MODEL_DIR:-model_cache}:/model
+      - ./entrypoint.sh:/vllm-entrypoint.sh:ro
     command:
-      - --model
-      - Qwen/Qwen3-0.6B
       - --enable-auto-tool-choice
       - --tool-call-parser
       - qwen3_xml
@@ -22,3 +25,6 @@ services:
               count: all
               capabilities:
                 - gpu
+
+volumes:
+  model_cache:
