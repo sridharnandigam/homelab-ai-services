@@ -1,0 +1,30 @@
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    entrypoint: ["/bin/bash", "/vllm-entrypoint.sh"]
+    ports:
+      - "8000:8000"
+    ipc: host
+    env_file:
+      - .env
+    environment:
+      HF_MODEL_ID: HauhauCS/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive
+    volumes:
+      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
+      - ${MODEL_DIR:-model_cache}:/model
+      - ./entrypoint.sh:/vllm-entrypoint.sh:ro
+    command:
+      - --enable-auto-tool-choice
+      - --tool-call-parser
+      - qwen3_xml
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+
+volumes:
+  model_cache:
