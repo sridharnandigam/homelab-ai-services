@@ -1,7 +1,7 @@
 services:
   vllm:
     image: vllm/vllm-openai:latest
-    container_name: vllm-qwen3.5-35b
+    container_name: vllm-nemotron-3-nano-30b
     entrypoint: ["/bin/bash", "/vllm-entrypoint.sh"]
     ports:
       - "8000:8000"
@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      HF_MODEL_ID: Qwen/Qwen3.5-35B-A3B
+      HF_MODEL_ID: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
     volumes:
       - ${HOME}/.cache/huggingface:/root/.cache/huggingface
       - ${MODEL_DIR:-model_cache}:/model
